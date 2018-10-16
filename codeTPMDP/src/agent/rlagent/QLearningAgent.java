@@ -1,9 +1,6 @@
 package agent.rlagent;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 import javafx.util.Pair;
 import environnement.Action;
@@ -56,14 +53,21 @@ public class QLearningAgent extends RLAgent {
 		// retourne liste vide si aucune action legale (etat terminal)
 		List<Action> returnactions = new ArrayList<Action>();
 		HashMap<Action,Double> actionEtats = new HashMap<>(qvaleurs.get(e));
+		double value = 0.0;
 		if (this.getActionsLegales(e).size() == 0){//etat  absorbant; impossible de le verifier via environnement
 			System.out.println("aucune action legale");
 			return new ArrayList<Action>();
 			
 		}
+		value = Collections.max(actionEtats.values());
+		for (Map.Entry<Action,Double> entry: actionEtats.entrySet())
+		{
+			if(Objects.equals(value,entry.getValue()))
+			{
+				returnactions.add(entry.getKey());
+			}
+		}
 
-
-		Collections.max(actionEtats.values());
 
 		//*** VOTRE CODE
 		return returnactions;
@@ -75,13 +79,19 @@ public class QLearningAgent extends RLAgent {
 	public double getValeur(Etat e) {
 		//*** VOTRE CODE
 		HashMap<Action,Double> actionEtats = new HashMap<>(qvaleurs.get(e));
-		List<Action> returnactions = new ArrayList<Action>(this.env.getActionsPossibles(e));
-		//for (int i = 0; i< len returnaction)
+		List<Action> returnactions = new ArrayList<>(this.env.getActionsPossibles(e));
+		List<Double> listElem = new ArrayList<>();
+		double val = 0.0;
+		for (int i = 0; i< returnactions.size();++i)
+		{
+			listElem.add(getQValeur(e,returnactions.get(i)));
+		}
+		val = Collections.max(listElem);
 			// met dans liste
-			List<Double> listElem = new ArrayList<>();
+
 		//calcul arg max de l'état en fonction des actiosn
 
-		return 0.0;
+		return val;
 		
 	}
 
@@ -91,7 +101,6 @@ public class QLearningAgent extends RLAgent {
 		double val = 0.0;
 		HashMap<Action,Double> actionEtats = new HashMap<>(qvaleurs.get(e));
 		val = actionEtats.get(a);
-
 		return val;
 	}
 	
