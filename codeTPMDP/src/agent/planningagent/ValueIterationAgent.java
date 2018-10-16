@@ -90,7 +90,7 @@ public class ValueIterationAgent extends PlanningValueAgent{
                     value = 0.0;
 				}
 
-                System.out.println("Value action " + valueAction );
+                //System.out.println("Value action " + valueAction );
                 goodValue = Collections.max(valueAction,null);
                 valueAllEtat.add(goodValue);
                 diffHashDelta.add(goodValue-V.get(etat));
@@ -176,7 +176,7 @@ public class ValueIterationAgent extends PlanningValueAgent{
 		// retourne liste vide si aucune action legale (etat absorbant)
 
 
-        System.out.println(returnactions);
+        //System.out.println(returnactions);
 		return returnactions;
 		
 	}

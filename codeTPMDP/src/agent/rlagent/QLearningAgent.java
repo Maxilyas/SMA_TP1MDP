@@ -1,6 +1,7 @@
 package agent.rlagent;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -54,12 +55,16 @@ public class QLearningAgent extends RLAgent {
 		// retourne action de meilleures valeurs dans _e selon Q : utiliser getQValeur()
 		// retourne liste vide si aucune action legale (etat terminal)
 		List<Action> returnactions = new ArrayList<Action>();
+		HashMap<Action,Double> actionEtats = new HashMap<>(qvaleurs.get(e));
 		if (this.getActionsLegales(e).size() == 0){//etat  absorbant; impossible de le verifier via environnement
 			System.out.println("aucune action legale");
 			return new ArrayList<Action>();
 			
 		}
-		
+
+
+		Collections.max(actionEtats.values());
+
 		//*** VOTRE CODE
 		return returnactions;
 		
@@ -69,6 +74,13 @@ public class QLearningAgent extends RLAgent {
 	@Override
 	public double getValeur(Etat e) {
 		//*** VOTRE CODE
+		HashMap<Action,Double> actionEtats = new HashMap<>(qvaleurs.get(e));
+		List<Action> returnactions = new ArrayList<Action>(this.env.getActionsPossibles(e));
+		//for (int i = 0; i< len returnaction)
+			// met dans liste
+			List<Double> listElem = new ArrayList<>();
+		//calcul arg max de l'état en fonction des actiosn
+
 		return 0.0;
 		
 	}
@@ -76,7 +88,11 @@ public class QLearningAgent extends RLAgent {
 	@Override
 	public double getQValeur(Etat e, Action a) {
 		//*** VOTRE CODE
-		return 0;
+		double val = 0.0;
+		HashMap<Action,Double> actionEtats = new HashMap<>(qvaleurs.get(e));
+		val = actionEtats.get(a);
+
+		return val;
 	}
 	
 	
@@ -84,7 +100,7 @@ public class QLearningAgent extends RLAgent {
 	@Override
 	public void setQValeur(Etat e, Action a, double d) {
 		//*** VOTRE CODE
-		
+		//qvaleurs.put(e,((1-alpha)*this.getQValeur(e,a) + alpha*( rec + gamma* Q next state);
 		
 		// mise a jour vmax et vmin pour affichage du gradient de couleur:
 				//vmax est la valeur de max pour tout s de V
@@ -123,7 +139,7 @@ public class QLearningAgent extends RLAgent {
 	public void reset() {
 		super.reset();
 		//*** VOTRE CODE
-		
+		qvaleurs = new HashMap<Etat,HashMap<Action,Double>>();
 		this.episodeNb =0;
 		this.notifyObs();
 	}
