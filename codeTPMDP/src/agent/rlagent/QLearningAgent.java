@@ -146,8 +146,12 @@ public class QLearningAgent extends RLAgent {
 	public void endStep(Etat e, Action a, Etat esuivant, double reward) {
 		if (RLAgent.DISPRL)
 			System.out.println("QL mise a jour etat "+e+" action "+a+" etat' "+esuivant+ " r "+reward);
-		    double value = (1-alpha)*this.getQValeur(e,a) + alpha*(reward + gamma * getValeur(esuivant));
-		    this.setQValeur(e,a,value);
+            if (!env.estAbsorbant())
+            {
+                double value = (1-alpha)*this.getQValeur(e,a) + alpha*(reward + gamma * getValeur(esuivant));
+                this.setQValeur(e,a,value);
+            }
+
 
 		//*** VOTRE CODE
 	}
