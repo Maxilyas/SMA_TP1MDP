@@ -52,23 +52,26 @@ public class QLearningAgent extends RLAgent {
 		// retourne action de meilleures valeurs dans _e selon Q : utiliser getQValeur()
 		// retourne liste vide si aucune action legale (etat terminal)
 		List<Action> returnactions = new ArrayList<Action>();
-		HashMap<Action,Double> actionEtats = new HashMap<>(qvaleurs.get(e));
+		List<Double> ListAll = new ArrayList<>();
 		if (this.getActionsLegales(e).size() == 0){//etat  absorbant; impossible de le verifier via environnement
 			System.out.println("aucune action legale");
 			return new ArrayList<Action>();
 			
-		}else
+		}
+
+        for (int i =0; i< this.getActionsLegales(e).size();++i)
         {
-            double value = Collections.max(actionEtats.values());
-            for (Map.Entry<Action,Double> entry: actionEtats.entrySet())
+
+            ListAll.add(getQValeur(e,this.getActionsLegales(e).get(i)));
+        }
+        double value = Collections.max(ListAll);
+        for(int i = 0; i<this.getActionsLegales(e).size();++i)
+        {
+            if (getQValeur(e,this.getActionsLegales(e).get(i)) == value)
             {
-                if(Objects.equals(value,entry.getValue()))
-                {
-                    returnactions.add(entry.getKey());
-                }
+                returnactions.add(this.getActionsLegales(e).get(i));
             }
         }
-
 
 
 
@@ -103,26 +106,38 @@ public class QLearningAgent extends RLAgent {
 	public double getQValeur(Etat e, Action a) {
 		//*** VOTRE CODE
         double val = 0.0;
-        if (qvaleurs.containsKey(e) && qvaleurs.get(e).get(a) != null)
+        if (qvaleurs.containsKey(e) && qvaleurs.get(e).containsKey(a))
         {
             val = qvaleurs.get(e).get(a);
-        }else{
-            setQValeur(e,a,0);
         }
 
 		return val;
 	}
 	
-	
-	
+
 	@Override
 	public void setQValeur(Etat e, Action a, double d) {
 		//*** VOTRE CODE
         HashMap<Action,Double> tmp = new HashMap<>();
-        tmp.put(a,d);
+
+        if (this.qvaleurs.get(e) == null)
+        {
+            tmp.put(a,d);
+        }
+        else {
+            tmp = this.qvaleurs.get(e);
+            tmp.put(a, d);
+        }
         this.qvaleurs.put(e,tmp);
 
-
+		if (d > vmax)
+		{
+			vmax = d;
+		}
+		if (d < vmin)
+		{
+			vmin = d;
+		}
 		// mise a jour vmax et vmin pour affichage du gradient de couleur:
 				//vmax est la valeur de max pour tout s de V
 				//vmin est la valeur de min pour tout s de V
@@ -146,11 +161,9 @@ public class QLearningAgent extends RLAgent {
 	public void endStep(Etat e, Action a, Etat esuivant, double reward) {
 		if (RLAgent.DISPRL)
 			System.out.println("QL mise a jour etat "+e+" action "+a+" etat' "+esuivant+ " r "+reward);
-            if (!env.estAbsorbant())
-            {
-                double value = (1-alpha)*this.getQValeur(e,a) + alpha*(reward + gamma * getValeur(esuivant));
-                this.setQValeur(e,a,value);
-            }
+        double value = (1-this.alpha)*this.getQValeur(e,a) + this.alpha*(reward + this.gamma * getValeur(esuivant));
+        this.setQValeur(e,a,value);
+
 
 
 		//*** VOTRE CODE

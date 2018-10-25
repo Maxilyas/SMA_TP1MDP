@@ -1,7 +1,6 @@
 package agent.strategy;
 
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 import agent.rlagent.RLAgent;
 import environnement.Action;
@@ -28,14 +27,47 @@ public class StrategyGreedy extends StrategyExploration{
 	@Override
 	public Action getAction(Etat _e) {//renvoi null si _e absorbant
 		double d =rand.nextDouble();
-		List<Action> actions;
+		double sum = 0;
+		int block = 0;
+		List<Action> actions = new ArrayList<>();
+		List<Double> ListMaxElem = new ArrayList<>();
+		HashMap<Integer,Action> tmp =new HashMap<>();
 		if (this.agent.getActionsLegales(_e).isEmpty()){
 			return null;
 		}
-	
+		for(int i = 0;i<this.agent.getActionsLegales(_e).size();++i)
+		{
+				ListMaxElem.add(this.agent.getQValeur(_e,this.agent.getActionsLegales(_e).get(i)));
+		}
+		double value = Collections.max(ListMaxElem);
+		int addval = 2;
+		for(int i =0; i< this.agent.getActionsLegales(_e).size();++i)
+		{
+			if(value == this.agent.getQValeur(_e,this.agent.getActionsLegales(_e).get(i)) && value != 0 && block ==0)
+			{
+			    block = 1;
+				tmp.put(1,this.agent.getActionsLegales(_e).get(i));
+
+			}else
+            {
+                tmp.put(addval,this.agent.getActionsLegales(_e).get(i));
+                addval = addval +1;
+
+            }
+
+		}
+		sum = (1 -epsilon);
+		if(sum < d)
+		{
+			return tmp.get(1) ;
+		}else
+		{
+			int randInt = rand.nextInt(addval-2)+2;
+			return tmp.get(randInt);
+		}
+
 		//VOTRE CODE ICI
-		
-		return null;
+
 	}
 
 	public double getEpsilon() {
