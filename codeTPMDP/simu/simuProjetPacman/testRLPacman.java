@@ -43,7 +43,7 @@ public class testRLPacman extends Application{
 	/** nombre de partie ou l'agent exploite la politique apprise (epsilon=0) */
 	static int nbepisodegreedy = 300;
 	/** nombre de parties ou l'on affiche le jeu pacman pour voir le comportement appris  */
-	static int nbepisodegreedydisplay=0;
+	static int nbepisodegreedydisplay=1;
 
 	
 	/** pour afficher jeu de pacman en mode greedy */

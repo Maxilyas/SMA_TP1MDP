@@ -57,13 +57,18 @@ public class StrategyGreedy extends StrategyExploration{
 
 		}
 		sum = (1 -epsilon);
-		if(sum < d)
+		if(sum > d && tmp.containsKey(1))
 		{
 			return tmp.get(1) ;
 		}else
 		{
-			int randInt = rand.nextInt(addval-2)+2;
-			return tmp.get(randInt);
+			if (addval > 2){
+				int randInt = rand.nextInt(addval-2)+2;
+				return tmp.get(randInt);
+			}else {
+				return tmp.get(1);
+			}
+
 		}
 
 		//VOTRE CODE ICI

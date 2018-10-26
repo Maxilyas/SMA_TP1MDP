@@ -26,7 +26,7 @@ public class EnvironnementPacmanMDPClassic extends EnvironnementPacmanRL {
 
 		StateGamePacman gamestate;
 		try {
-			gamestate = new StateGamePacman(new MazePacman(filename));
+			gamestate = new StateGamePacman(new MazePacman("codeTPMDP/"+filename));
 			//creation du jeu
 			gamepacman=new GamePacman(gamestate);
 			//creation agent fantomes
@@ -84,7 +84,7 @@ public class EnvironnementPacmanMDPClassic extends EnvironnementPacmanRL {
 	public void reset() {//reset seulement le labyrinthe et etat initial des agents : fantomes identiques
 		StateGamePacman gamestate;
 		try {
-			gamestate = new StateGamePacman(new MazePacman(filename));
+			gamestate = new StateGamePacman(new MazePacman("codeTPMDP/"+filename));
 			
 			//creation du jeu
 			gamepacman.setState(gamestate);			
