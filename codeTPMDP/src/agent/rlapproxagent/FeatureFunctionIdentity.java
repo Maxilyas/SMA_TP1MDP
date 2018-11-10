@@ -1,8 +1,6 @@
 package agent.rlapproxagent;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 import environnement.Action;
 import environnement.Action2D;
@@ -18,22 +16,44 @@ import javafx.util.Pair;
  */
 public class FeatureFunctionIdentity implements FeatureFunction {
 	//*** VOTRE CODE
+	int size;
+	int rank;
+	HashMap<Etat,HashMap<Action,double[]>> feature;
 	
 	public FeatureFunctionIdentity(int _nbEtat, int _nbAction){
 		//*** VOTRE CODE
+		size = _nbEtat * _nbAction;
+		rank = 0;
+		feature = new HashMap<>();
 	}
 	
 	@Override
 	public int getFeatureNb() {
 		//*** VOTRE CODE
-		return 0;
+		return size;
 	}
 
 	@Override
 	public double[] getFeatures(Etat e,Action a){
 		//*** VOTRE CODE
-		
-		return null;
+		if(feature.containsKey(e))
+			if(feature.get(e).containsKey(a))
+				return feature.get(e).get(a);
+
+		double[] vec = new double[size];
+		Arrays.fill(vec,0);
+		vec[rank] = 1;
+		rank ++;
+
+		if(feature.containsKey(e))
+			feature.get(e).put(a, vec);
+		else
+		{
+			HashMap<Action,double[]> temp = new HashMap<>();
+			temp.put(a,vec);
+			feature.put(e, temp);
+		}
+		return vec;
 	}
 	
 

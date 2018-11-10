@@ -58,7 +58,12 @@ public class EtatPacmanMDPClassic implements Etat , Cloneable{
 
 
 	}
-	
+
+    public int getDimensions()
+    {
+
+        return 3240;
+    }
 	@Override
 	public String toString() {
 		

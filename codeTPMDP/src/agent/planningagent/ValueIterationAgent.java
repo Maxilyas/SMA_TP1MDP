@@ -71,12 +71,10 @@ public class ValueIterationAgent extends PlanningValueAgent{
         ArrayList<Double> diffHashDelta = new ArrayList<>();
         HashMap<Etat,Double> V_old = new HashMap<>(this.V);
 		for (Etat etat:this.mdp.getEtatsAccessibles()){
-
 			if (this.getMdp().estAbsorbant(etat)) {
 			}
 			else
 			{
-
 				for(Action action:this.mdp.getActionsPossibles(etat)) {
 					try {
 						for (Etat etatArrive : this.mdp.getEtatTransitionProba(etat, action).keySet()) {
