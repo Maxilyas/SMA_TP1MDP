@@ -6,6 +6,10 @@ import pacman.elements.StateGamePacman;
 import pacman.environnementRL.EnvironnementPacmanMDPClassic;
 import environnement.Action;
 import environnement.Etat;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+
 /**
  * Vecteur de fonctions caracteristiques pour jeu de pacman: 4 fonctions phi_i(s,a)
  *  
@@ -44,8 +48,30 @@ public class FeatureFunctionPacman implements FeatureFunction{
 		}
 	
 		StateAgentPacman pacmanstate_next= stategamepacman.movePacmanSimu(0, new ActionPacman(a.ordinal()));
-		 
+		StateAgentPacman ghoststate_next = stategamepacman.moveGhostSimu(0,new ActionPacman(a.ordinal()));
 		//*** VOTRE CODE
+		vfeatures[0] = 1;
+
+		int PacmanXnextState = pacmanstate_next.getX();
+		int PacmanYnextState = pacmanstate_next.getY();
+		int GhostXnextState = ghoststate_next.getX();
+		int GhostYnextState = ghoststate_next.getX();
+		int NbGhostClose = 0;
+
+		for (int i =0 ; i< stategamepacman.getNumberOfGhosts();i++)
+			if (GhostXnextState == PacmanXnextState && GhostYnextState== PacmanYnextState)
+				NbGhostClose++;
+		vfeatures[1] = NbGhostClose;
+
+		if (stategamepacman.getClosestDot(pacmanstate_next) == 0)
+			vfeatures[2] = 1;
+		else
+			vfeatures[2] = 0;
+
+		int dist = stategamepacman.getClosestDot(pacmanstate_next);
+		int sizeMazeX = stategamepacman.getMaze().getSizeX();
+		int sizeMazeY = stategamepacman.getMaze().getSizeY();
+		vfeatures[3] = dist/(sizeMazeX*sizeMazeY);
 		
 		
 		

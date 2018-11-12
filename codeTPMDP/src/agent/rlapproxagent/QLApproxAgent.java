@@ -50,12 +50,13 @@ public class QLApproxAgent extends QLearningAgent{
 			System.out.println("QL: mise a jour poids pour etat \n"+e+" action "+a+" etat' \n"+esuivant+ " r "+reward);
 		}
        //inutile de verifier si e etat absorbant car dans runEpisode et threadepisode 
-		//arrete episode lq etat courant absorbant	
-
+		//arrete episode lq etat courant absorbant
 		//*** VOTRE CODE
-	//TODO sort getValeur,getQvaleur, le vecteur feature avant !!!!!!!
+		double maxQvalue = getValeur(esuivant);
+		double Qvalue = getQValeur(e,a);
+		double[] feature = vector_feature.get(0).getFeatures(e,a);
         for(int i = 0; i < weights.length; i++)
-            weights[i] += alpha * (reward + gamma * getValeur(esuivant) - getQValeur(e,a)) * vector_feature.get(0).getFeatures(e, a)[i];
+            weights[i] += alpha * (reward + gamma * maxQvalue - Qvalue) * feature[i];
 		
 		
 	}
