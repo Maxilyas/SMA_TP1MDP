@@ -48,19 +48,23 @@ public class FeatureFunctionPacman implements FeatureFunction{
 		}
 	
 		StateAgentPacman pacmanstate_next= stategamepacman.movePacmanSimu(0, new ActionPacman(a.ordinal()));
-		StateAgentPacman ghoststate_next = stategamepacman.moveGhostSimu(0,new ActionPacman(a.ordinal()));
+		StateAgentPacman ghoststate_next;
 		//*** VOTRE CODE
 		vfeatures[0] = 1;
 
 		int PacmanXnextState = pacmanstate_next.getX();
 		int PacmanYnextState = pacmanstate_next.getY();
-		int GhostXnextState = ghoststate_next.getX();
-		int GhostYnextState = ghoststate_next.getX();
-		int NbGhostClose = 0;
 
-		for (int i =0 ; i< stategamepacman.getNumberOfGhosts();i++)
-			if (GhostXnextState == PacmanXnextState && GhostYnextState== PacmanYnextState)
-				NbGhostClose++;
+		int NbGhostClose = 0;
+        int[] GhostXnextState = new int[stategamepacman.getNumberOfGhosts()];
+        int[] GhostYnextState = new int[stategamepacman.getNumberOfGhosts()];
+		for (int i =0 ; i< stategamepacman.getNumberOfGhosts();i++) {
+            ghoststate_next = stategamepacman.moveGhostSimu(i, new ActionPacman(a.ordinal()));
+            GhostXnextState[i] = ghoststate_next.getX();
+            GhostYnextState[i] = ghoststate_next.getY();
+            if (GhostXnextState[i] == PacmanXnextState && GhostYnextState[i] == PacmanYnextState)
+                NbGhostClose++;
+        }
 		vfeatures[1] = NbGhostClose;
 
 		if (stategamepacman.getClosestDot(pacmanstate_next) == 0)
