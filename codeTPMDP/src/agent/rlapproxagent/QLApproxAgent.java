@@ -53,6 +53,7 @@ public class QLApproxAgent extends QLearningAgent{
 		//arrete episode lq etat courant absorbant	
 
 		//*** VOTRE CODE
+	//TODO sort getValeur,getQvaleur, le vecteur feature avant !!!!!!!
         for(int i = 0; i < weights.length; i++)
             weights[i] += alpha * (reward + gamma * getValeur(esuivant) - getQValeur(e,a)) * vector_feature.get(0).getFeatures(e, a)[i];
 		
