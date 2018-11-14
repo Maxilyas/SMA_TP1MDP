@@ -41,7 +41,6 @@ public class FeatureFunctionIdentity implements FeatureFunction {
 				return feature.get(e).get(a);
 
 		double[] vec = new double[size];
-		Arrays.fill(vec,0);
 		vec[rank] = 1;
 		rank ++;
 

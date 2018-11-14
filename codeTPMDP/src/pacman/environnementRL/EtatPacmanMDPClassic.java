@@ -21,6 +21,7 @@ public class EtatPacmanMDPClassic implements Etat , Cloneable{
     int xPacman;
     int yPacman;
     int closestDot;
+    StateGamePacman state;
 
     @Override
     public boolean equals(Object o) {
@@ -55,14 +56,21 @@ public class EtatPacmanMDPClassic implements Etat , Cloneable{
         xPacman = _stategamepacman.getPacmanState(0).getX();
 	    yPacman = _stategamepacman.getPacmanState(0).getY();
 	    closestDot = _stategamepacman.getClosestDot(_stategamepacman.getPacmanState(0));
+	    state = _stategamepacman;
 
 
 	}
 
     public int getDimensions()
     {
+        int dim = 1;
+        int sizeX = state.getMaze().getSizeX();
+        int sizeY = state.getMaze().getSizeY();
 
-        return 3240;
+        dim *= (sizeX * sizeX) - state.getMaze().getNbwall();
+        dim *= (sizeY * sizeY) - state.getMaze().getNbwall();
+        dim *= sizeX + sizeY;
+        return dim;
     }
 	@Override
 	public String toString() {

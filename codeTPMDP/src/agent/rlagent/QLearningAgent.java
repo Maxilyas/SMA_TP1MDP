@@ -85,21 +85,24 @@ public class QLearningAgent extends RLAgent {
 	public double getValeur(Etat e) {
 		//*** VOTRE CODE
 
-        if (this.qvaleurs.containsKey(e))
-        {
-            List<Action> returnactions = new ArrayList<>(this.env.getActionsPossibles(e));
-            List<Double> listElem = new ArrayList<>();
+		List<Action> returnactions = new ArrayList<>(this.env.getActionsPossibles(e));
+		List<Double> listElem = new ArrayList<>();
 
-            for (int i = 0; i< returnactions.size();++i)
-            {
-                listElem.add(getQValeur(e,returnactions.get(i)));
-            }
-            double val = Collections.max(listElem);
-            return val;
-        }
+		for (int i = 0; i< returnactions.size();++i)
+		{
+			listElem.add(getQValeur(e,returnactions.get(i)));
+		}
+		if (listElem.size()>0)
+		{
+			double val = Collections.max(listElem);
+			return val;
+		}
+		else
+		{
+			return 0;
 
-		return 0;
-		
+		}
+
 	}
 
 	@Override

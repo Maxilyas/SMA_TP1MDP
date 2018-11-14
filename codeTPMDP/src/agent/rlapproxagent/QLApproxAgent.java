@@ -19,14 +19,14 @@ import environnement.Etat;
  *
  */
 public class QLApproxAgent extends QLearningAgent{
-    Vector<FeatureFunction> vector_feature = new Vector();
+    FeatureFunction feature;
     double[] weights;
 	public QLApproxAgent(double alpha, double gamma, Environnement _env,FeatureFunction _featurefunction) {
 		super(alpha, gamma, _env);
-		this.vector_feature.add(_featurefunction);
+		this.feature = _featurefunction;
 		//*** VOTRE CODE
         weights = new double[_featurefunction.getFeatureNb()];
-        Arrays.fill(weights,1);
+        Arrays.fill(weights,1.0);
 	}
 
 	
@@ -34,8 +34,8 @@ public class QLApproxAgent extends QLearningAgent{
 	public double getQValeur(Etat e, Action a) {
 		//*** VOTRE CODE
         double res = 0;
-        int nb_features = this.vector_feature.get(0).getFeatureNb();
-        double[] value = this.vector_feature.get(0).getFeatures(e,a);
+        int nb_features = this.feature.getFeatureNb();
+        double[] value = this.feature.getFeatures(e,a);
         for (int i = 0; i<nb_features;++i)
             res += value[i]*weights[i];
         return res;
@@ -54,7 +54,7 @@ public class QLApproxAgent extends QLearningAgent{
 		//*** VOTRE CODE
 		double maxQvalue = getValeur(esuivant);
 		double Qvalue = getQValeur(e,a);
-		double[] feature = vector_feature.get(0).getFeatures(e,a);
+		double[] feature = this.feature.getFeatures(e,a);
         for(int i = 0; i < weights.length; i++)
             weights[i] += alpha * (reward + gamma * maxQvalue - Qvalue) * feature[i];
 		
@@ -66,8 +66,7 @@ public class QLApproxAgent extends QLearningAgent{
 		super.reset();
 		this.qvaleurs.clear();
 		//*** VOTRE CODE
-        this.vector_feature.clear();
-        Arrays.fill(this.weights,1);
+        Arrays.fill(this.weights,1.0);
 		this.episodeNb =0;
 		this.notifyObs();
 	}
