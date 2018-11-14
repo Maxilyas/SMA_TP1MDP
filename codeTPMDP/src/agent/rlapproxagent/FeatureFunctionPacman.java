@@ -48,7 +48,6 @@ public class FeatureFunctionPacman implements FeatureFunction{
 		}
 	
 		StateAgentPacman pacmanstate_next= stategamepacman.movePacmanSimu(0, new ActionPacman(a.ordinal()));
-		StateAgentPacman ghoststate_next;
 		//*** VOTRE CODE
 		vfeatures[0] = 1;
 
@@ -56,25 +55,24 @@ public class FeatureFunctionPacman implements FeatureFunction{
 		int PacmanYnextState = pacmanstate_next.getY();
 
 		int NbGhostClose = 0;
-        int[] GhostXnextState = new int[stategamepacman.getNumberOfGhosts()];
-        int[] GhostYnextState = new int[stategamepacman.getNumberOfGhosts()];
+        int[] GhostX = new int[stategamepacman.getNumberOfGhosts()];
+        int[] GhostY = new int[stategamepacman.getNumberOfGhosts()];
 		for (int i =0 ; i< stategamepacman.getNumberOfGhosts();i++) {
-            ghoststate_next = stategamepacman.moveGhostSimu(i, new ActionPacman(a.ordinal()));
-            GhostXnextState[i] = ghoststate_next.getX();
-            GhostYnextState[i] = ghoststate_next.getY();
-            if (GhostXnextState[i] == PacmanXnextState && GhostYnextState[i] == PacmanYnextState)
+            GhostX[i] = stategamepacman.getGhostState(i).getX();
+            GhostY[i] = stategamepacman.getGhostState(i).getY();
+            if ((GhostX[i] == PacmanXnextState && Math.abs(PacmanYnextState - GhostY[i]) == 1) || (GhostY[i] == PacmanYnextState && Math.abs(PacmanXnextState - GhostX[i]) == 1))
                 NbGhostClose++;
         }
 		vfeatures[1] = NbGhostClose;
 
-		if (stategamepacman.getClosestDot(pacmanstate_next) == 0)
+		if (stategamepacman.getMaze().isFood(PacmanXnextState,PacmanYnextState))
 			vfeatures[2] = 1;
 		else
 			vfeatures[2] = 0;
 
-		int dist = stategamepacman.getClosestDot(pacmanstate_next);
-		int sizeMazeX = stategamepacman.getMaze().getSizeX();
-		int sizeMazeY = stategamepacman.getMaze().getSizeY();
+		double dist = stategamepacman.getClosestDot(pacmanstate_next);
+		double sizeMazeX = stategamepacman.getMaze().getSizeX();
+		double sizeMazeY = stategamepacman.getMaze().getSizeY();
 		vfeatures[3] = dist/(sizeMazeX*sizeMazeY);
 		
 		

@@ -7,7 +7,7 @@
       <src_folder value="file://$MODULE_DIR$/simu" expected_position="1" />
     </src_description>
   </component>
-  <component name="NewModuleRootManager">
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8">
     <output url="file://$MODULE_DIR$/bin" />
     <exclude-output />
     <content url="file://$MODULE_DIR$">
@@ -27,6 +27,7 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="library" name="jfxrt" level="project" />
     <orderEntry type="library" name="IAMDPLib1.8.0" level="project" />
   </component>
 </module>
