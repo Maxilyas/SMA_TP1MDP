@@ -123,14 +123,13 @@ public class ValueIterationAgent extends PlanningValueAgent{
         List<Action> actions = getPolitique(e);
 
         int size = actions.size();
-		if (size == 0){
-            return null;
-
+		if (size > 0){
+			int random = rand.nextInt(size);
+			return actions.get(random);
+		}else
+		{
+			return Action2D.NONE;
 		}
-        int random = rand.nextInt(size);
-        return actions.get(random);
-
-
 	}
 	@Override
 	public double getValeur(Etat _e) {
@@ -147,30 +146,34 @@ public class ValueIterationAgent extends PlanningValueAgent{
         double value = 0.0;
         double maxValeurAction = 0.0;
         List<Action> returnactions = new ArrayList<Action>();
-        HashMap<Etat,Double> V_old = new HashMap<>(this.V);
+        Map<Action,Double> valeurAction = new HashMap<>();
 
         for(Action action:this.mdp.getActionsPossibles(_e))
         {
-            System.out.println("ACTION : " + action);
             try {
                 for(Etat etatArrive:this.mdp.getEtatTransitionProba(_e,action).keySet())
                 {
-                    value = value + this.mdp.getEtatTransitionProba(_e,action).get(etatArrive)* (this.mdp.getRecompense(_e,action,etatArrive) + this.getGamma()*V_old.get(etatArrive));
+                    value = value + this.mdp.getEtatTransitionProba(_e,action).get(etatArrive)* (this.mdp.getRecompense(_e,action,etatArrive) + this.getGamma()*this.V.get(etatArrive));
+
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            if (maxValeurAction < value){
-                returnactions.clear();
-                maxValeurAction = value;
-                returnactions.add(action);
-            }else if(maxValeurAction == value)
-            {
-                returnactions.add(action);
-            }
+			valeurAction.put(action,value);
             value = 0.0;
         }
-		// retourne action de meilleure valeur dans _e selon V, 
+        if (valeurAction.size() > 0)
+		{
+			maxValeurAction = Collections.max(valeurAction.values());
+			for (Map.Entry<Action, Double> entry : valeurAction.entrySet())
+			{
+				if(entry.getValue() == maxValeurAction)
+				{
+					returnactions.add(entry.getKey());
+				}
+			}
+		}
+		// retourne action de meilleure valeur dans _e selon V,
 		// retourne liste vide si aucune action legale (etat absorbant)
 
 
