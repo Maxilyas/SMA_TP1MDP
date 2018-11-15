@@ -59,7 +59,7 @@ public class FeatureFunctionPacman implements FeatureFunction{
 		for (int i =0 ; i< stategamepacman.getNumberOfGhosts();i++) {
             GhostX[i] = stategamepacman.getGhostState(i).getX();
             GhostY[i] = stategamepacman.getGhostState(i).getY();
-            if ((GhostX[i] == PacmanXnextState && Math.abs(PacmanYnextState - GhostY[i]) == 1) || (GhostY[i] == PacmanYnextState && Math.abs(PacmanXnextState - GhostX[i]) == 1))
+            if ((GhostX[i] == PacmanXnextState && Math.abs(PacmanYnextState - GhostY[i]) <= 1) || (GhostY[i] == PacmanYnextState && Math.abs(PacmanXnextState - GhostX[i]) <= 1))
                 NbGhostClose++;
         }
 		vfeatures[1] = NbGhostClose;
@@ -70,13 +70,13 @@ public class FeatureFunctionPacman implements FeatureFunction{
 			vfeatures[2] = 0;
 
 		// Distance Manhattan
-		double dist = stategamepacman.getClosestDot(pacmanstate_next);
+		//double dist = stategamepacman.getClosestDot(pacmanstate_next);
 		double sizeMazeX = stategamepacman.getMaze().getSizeX();
 		double sizeMazeY = stategamepacman.getMaze().getSizeY();
 		double sizemap = sizeMazeX*sizeMazeY;
 
 		// Parcours en largeur (marche moins bien que manhattan)
-		//double dist = BFS(stategamepacman);
+		double dist = BFS(stategamepacman,pacmanstate_next);
 		vfeatures[3] = dist/sizemap;
 
 
@@ -88,14 +88,15 @@ public class FeatureFunctionPacman implements FeatureFunction{
 	}
 
     // BFS Search
-	public double BFS(StateGamePacman state)
+	public double BFS(StateGamePacman state,StateAgentPacman next_state)
 	{
 		int R = state.getMaze().getSizeX();
 		int C = state.getMaze().getSizeY();
-		int sr = state.getPacmanState(0).getX();
-		int sc = state.getPacmanState(0).getY();
+		int sr = next_state.getX();
+		int sc = next_state.getY();
 		Queue<Integer> rq = new LinkedList<>();
 		Queue<Integer> cq = new LinkedList<>();
+		// NORD,SUD,EST,OUEST
 		int[] dr = {0,0,1,-1};
 		int[] dc = {1,-1,0,0};
 		double move_count = 0;
@@ -147,7 +148,7 @@ public class FeatureFunctionPacman implements FeatureFunction{
 		}
 		else
 		{
-			return -1;
+			return 0;
 		}
 	}
 

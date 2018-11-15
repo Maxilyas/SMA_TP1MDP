@@ -26,7 +26,7 @@ public class QLApproxAgent extends QLearningAgent{
 		this.feature = _featurefunction;
 		//*** VOTRE CODE
         weights = new double[_featurefunction.getFeatureNb()];
-        Arrays.fill(weights,1.0);
+        Arrays.fill(weights,0.0);
 	}
 
 	
@@ -66,7 +66,7 @@ public class QLApproxAgent extends QLearningAgent{
 		super.reset();
 		this.qvaleurs.clear();
 		//*** VOTRE CODE
-        Arrays.fill(this.weights,1.0);
+        Arrays.fill(this.weights,0.0);
 		this.episodeNb =0;
 		this.notifyObs();
 	}
