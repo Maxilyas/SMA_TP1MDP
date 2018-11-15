@@ -7,8 +7,7 @@ import pacman.environnementRL.EnvironnementPacmanMDPClassic;
 import environnement.Action;
 import environnement.Etat;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.*;
 
 /**
  * Vecteur de fonctions caracteristiques pour jeu de pacman: 4 fonctions phi_i(s,a)
@@ -70,14 +69,86 @@ public class FeatureFunctionPacman implements FeatureFunction{
 		else
 			vfeatures[2] = 0;
 
+		// Distance Manhattan
 		double dist = stategamepacman.getClosestDot(pacmanstate_next);
 		double sizeMazeX = stategamepacman.getMaze().getSizeX();
 		double sizeMazeY = stategamepacman.getMaze().getSizeY();
-		vfeatures[3] = dist/(sizeMazeX*sizeMazeY);
-		
+		double sizemap = sizeMazeX*sizeMazeY;
+
+		// Parcours en largeur (marche moins bien que manhattan)
+		//double dist = BFS(stategamepacman);
+		vfeatures[3] = dist/sizemap;
+
+
+
+
 		
 		
 		return vfeatures;
+	}
+
+    // BFS Search
+	public double BFS(StateGamePacman state)
+	{
+		int R = state.getMaze().getSizeX();
+		int C = state.getMaze().getSizeY();
+		int sr = state.getPacmanState(0).getX();
+		int sc = state.getPacmanState(0).getY();
+		Queue<Integer> rq = new LinkedList<>();
+		Queue<Integer> cq = new LinkedList<>();
+		int[] dr = {0,0,1,-1};
+		int[] dc = {1,-1,0,0};
+		double move_count = 0;
+		int nodes_left_in_layer = 1;
+		int nodes_in_next_layer = 0;
+		boolean reached_end = false;
+		boolean [][] visited = new boolean [R][C];
+
+		rq.offer(sr);
+		cq.offer(sc);
+		visited[sr][sc] = true;
+		while (rq.size()>0)
+		{
+			int r = rq.poll();
+			int c = cq.poll();
+			if (state.getMaze().isFood(r,c))
+			{
+				reached_end = true;
+				break;
+			}
+			for(int i = 0; i<4;i++)
+			{
+				int rr = r + dr[i];
+				int cc = c + dc[i];
+				if (rr<0 || cc < 0)
+					continue;
+				if (rr>=R || cc>=C)
+					continue;
+				if (visited[rr][cc])
+					continue;
+				if (state.getMaze().isWall(rr,cc))
+					continue;
+				rq.offer(rr);
+				cq.offer(cc);
+				visited[rr][cc] = true;
+				nodes_in_next_layer++;
+			}
+			nodes_left_in_layer--;
+			if (nodes_left_in_layer == 0)
+			{
+				nodes_left_in_layer = nodes_in_next_layer;
+				nodes_in_next_layer = 0;
+				move_count++;
+			}
+		}
+		if(reached_end)
+		{
+			return move_count;
+		}
+		else
+		{
+			return -1;
+		}
 	}
 
 	public void reset() {

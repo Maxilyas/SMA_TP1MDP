@@ -66,22 +66,26 @@ public class testRLPacman extends Application{
 	static Scene scene;
 	
 	private static void setRLAgent(){
-		//QLearning tabulaire classique
-		//pacmanmdp = new EnvironnementPacmanMDPClassic(mazename,true);
-		//rlagent = new QLearningAgent(alpha,gamma,pacmanmdp);
+		int method = 3;
+		switch (method){
+			case 1:
+				//QLearning tabulaire classique
+				pacmanmdp = new EnvironnementPacmanMDPClassic(mazename,true);
+				rlagent = new QLearningAgent(alpha,gamma,pacmanmdp);
+			case 2:
+				//Qlearning avec fonctions caracteristiques identite
+				pacmanmdp = new EnvironnementPacmanMDPClassic(mazename,true);
+				EtatPacmanMDPClassic etatmdp = (EtatPacmanMDPClassic) pacmanmdp.getEtatCourant();
+				System.out.println("Dimensions de etatMDP: "+etatmdp.getDimensions());
+				FeatureFunction featurefunction = new FeatureFunctionIdentity(etatmdp.getDimensions(),4);
+				rlagent = new QLApproxAgent(alpha,gamma,pacmanmdp,featurefunction);
+			case 3:
+				//QLearning avec approximation lineaire
+				pacmanmdp = new EnvironnementPacmanFeatureRL(mazename,true);//smallGrid smallGrid2 mediumGrid
+				FeatureFunction featurefunction2 = new FeatureFunctionPacman();
+				rlagent = new QLApproxAgent(alpha,gamma,pacmanmdp,featurefunction2);
 
-		//Qlearning avec fonctions caracteristiques identite
-		//pacmanmdp = new EnvironnementPacmanMDPClassic(mazename,true);
-	    //EtatPacmanMDPClassic etatmdp = (EtatPacmanMDPClassic) pacmanmdp.getEtatCourant();
-		//System.out.println("Dimensions de etatMDP: "+etatmdp.getDimensions());
-		//FeatureFunction featurefunction = new FeatureFunctionIdentity(etatmdp.getDimensions(),4);
-		//rlagent = new QLApproxAgent(alpha,gamma,pacmanmdp,featurefunction);
-
-		//QLearning avec approximation lineaire
-		pacmanmdp = new EnvironnementPacmanFeatureRL(mazename,true);//smallGrid smallGrid2 mediumGrid
-		FeatureFunction featurefunction2 = new FeatureFunctionPacman();
-		rlagent = new QLApproxAgent(alpha,gamma,pacmanmdp,featurefunction2);
-
+		}
 
 	}
 	
