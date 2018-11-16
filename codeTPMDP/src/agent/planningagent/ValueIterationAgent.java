@@ -152,10 +152,7 @@ public class ValueIterationAgent extends PlanningValueAgent{
         {
             try {
                 for(Etat etatArrive:this.mdp.getEtatTransitionProba(_e,action).keySet())
-                {
                     value = value + this.mdp.getEtatTransitionProba(_e,action).get(etatArrive)* (this.mdp.getRecompense(_e,action,etatArrive) + this.getGamma()*this.V.get(etatArrive));
-
-                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -166,37 +163,23 @@ public class ValueIterationAgent extends PlanningValueAgent{
 		{
 			maxValeurAction = Collections.max(valeurAction.values());
 			for (Map.Entry<Action, Double> entry : valeurAction.entrySet())
-			{
 				if(entry.getValue() == maxValeurAction)
-				{
 					returnactions.add(entry.getKey());
-				}
-			}
 		}
 		// retourne action de meilleure valeur dans _e selon V,
 		// retourne liste vide si aucune action legale (etat absorbant)
-
-
-        //System.out.println(returnactions);
 		return returnactions;
-		
 	}
 	
 	@Override
 	public void reset() {
 		super.reset();
-
-		
 		this.V.clear();
-		for (Etat etat:this.mdp.getEtatsAccessibles()){
+		//*** VOTRE CODE
+		for (Etat etat:this.mdp.getEtatsAccessibles())
 			V.put(etat, 0.0);
-		}
 		this.notifyObs();
 	}
-
-	
-
-	
 
 	public HashMap<Etat,Double> getV() {
 		return V;

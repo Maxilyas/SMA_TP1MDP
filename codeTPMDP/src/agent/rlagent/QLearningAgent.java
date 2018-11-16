@@ -56,29 +56,18 @@ public class QLearningAgent extends RLAgent {
 		if (this.getActionsLegales(e).size() == 0){//etat  absorbant; impossible de le verifier via environnement
 			System.out.println("aucune action legale");
 			return new ArrayList<Action>();
-			
 		}
-
-        for (int i =0; i< this.getActionsLegales(e).size();++i)
-        {
-
-            ListAll.add(getQValeur(e,this.getActionsLegales(e).get(i)));
-        }
-        double value = Collections.max(ListAll);
-        for(int i = 0; i<this.getActionsLegales(e).size();++i)
-        {
-            if (getQValeur(e,this.getActionsLegales(e).get(i)) == value)
-            {
-                returnactions.add(this.getActionsLegales(e).get(i));
-            }
-        }
-
-
-
 		//*** VOTRE CODE
+        for (int i =0; i< this.getActionsLegales(e).size();++i)
+            ListAll.add(getQValeur(e,this.getActionsLegales(e).get(i)));
+
+        double value = Collections.max(ListAll);
+
+        for(int i = 0; i<this.getActionsLegales(e).size();++i)
+            if (getQValeur(e,this.getActionsLegales(e).get(i)) == value)
+                returnactions.add(this.getActionsLegales(e).get(i));
+
 		return returnactions;
-		
-		
 	}
 	
 	@Override
@@ -89,19 +78,15 @@ public class QLearningAgent extends RLAgent {
 		List<Double> listElem = new ArrayList<>();
 
 		for (int i = 0; i< returnactions.size();++i)
-		{
 			listElem.add(getQValeur(e,returnactions.get(i)));
-		}
+
 		if (listElem.size()>0)
 		{
 			double val = Collections.max(listElem);
 			return val;
 		}
 		else
-		{
 			return 0;
-
-		}
 
 	}
 
@@ -110,9 +95,7 @@ public class QLearningAgent extends RLAgent {
 		//*** VOTRE CODE
         double val = 0.0;
         if (qvaleurs.containsKey(e) && qvaleurs.get(e).containsKey(a))
-        {
             val = qvaleurs.get(e).get(a);
-        }
 
 		return val;
 	}
@@ -124,9 +107,7 @@ public class QLearningAgent extends RLAgent {
         HashMap<Action,Double> tmp = new HashMap<>();
 
         if (this.qvaleurs.get(e) == null)
-        {
             tmp.put(a,d);
-        }
         else {
             tmp = this.qvaleurs.get(e);
             tmp.put(a, d);
@@ -134,21 +115,14 @@ public class QLearningAgent extends RLAgent {
         this.qvaleurs.put(e,tmp);
 
 		if (d > vmax)
-		{
 			vmax = d;
-		}
 		if (d < vmin)
-		{
 			vmin = d;
-		}
 		// mise a jour vmax et vmin pour affichage du gradient de couleur:
 				//vmax est la valeur de max pour tout s de V
 				//vmin est la valeur de min pour tout s de V
 				// ...
-		
-		
 		this.notifyObs();
-		
 	}
 	
 	
@@ -164,12 +138,9 @@ public class QLearningAgent extends RLAgent {
 	public void endStep(Etat e, Action a, Etat esuivant, double reward) {
 		if (RLAgent.DISPRL)
 			System.out.println("QL mise a jour etat "+e+" action "+a+" etat' "+esuivant+ " r "+reward);
+		//*** VOTRE CODE
         double value = (1-this.alpha)*this.getQValeur(e,a) + this.alpha*(reward + this.gamma * getValeur(esuivant));
         this.setQValeur(e,a,value);
-
-
-
-		//*** VOTRE CODE
 	}
 
 	@Override

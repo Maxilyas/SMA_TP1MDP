@@ -70,6 +70,7 @@ public class EtatPacmanMDPClassic implements Etat , Cloneable{
         dim *= (sizeX * sizeX) - state.getMaze().getNbwall();
         dim *= (sizeY * sizeY) - state.getMaze().getNbwall();
         dim *= sizeX + sizeY;
+
         return dim;
     }
 	@Override
@@ -77,8 +78,7 @@ public class EtatPacmanMDPClassic implements Etat , Cloneable{
 		
 		return "";
 	}
-	
-	
+
 	public Object clone() {
 		EtatPacmanMDPClassic clone = null;
 		try {

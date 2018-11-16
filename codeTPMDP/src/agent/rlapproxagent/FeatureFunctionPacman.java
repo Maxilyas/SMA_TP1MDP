@@ -143,13 +143,9 @@ public class FeatureFunctionPacman implements FeatureFunction{
 			}
 		}
 		if(reached_end)
-		{
 			return move_count;
-		}
 		else
-		{
 			return 0;
-		}
 	}
 
 	public void reset() {

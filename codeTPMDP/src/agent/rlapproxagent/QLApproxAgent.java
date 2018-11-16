@@ -38,6 +38,7 @@ public class QLApproxAgent extends QLearningAgent{
         double[] value = this.feature.getFeatures(e,a);
         for (int i = 0; i<nb_features;++i)
             res += value[i]*weights[i];
+
         return res;
 	}
 	
@@ -49,7 +50,7 @@ public class QLApproxAgent extends QLearningAgent{
 		if (RLAgent.DISPRL){
 			System.out.println("QL: mise a jour poids pour etat \n"+e+" action "+a+" etat' \n"+esuivant+ " r "+reward);
 		}
-       //inutile de verifier si e etat absorbant car dans runEpisode et threadepisode 
+       	//inutile de verifier si e etat absorbant car dans runEpisode et threadepisode
 		//arrete episode lq etat courant absorbant
 		//*** VOTRE CODE
 		double maxQvalue = getValeur(esuivant);
@@ -57,8 +58,6 @@ public class QLApproxAgent extends QLearningAgent{
 		double[] feature = this.feature.getFeatures(e,a);
         for(int i = 0; i < weights.length; i++)
             weights[i] += alpha * (reward + gamma * maxQvalue - Qvalue) * feature[i];
-		
-		
 	}
 	
 	@Override

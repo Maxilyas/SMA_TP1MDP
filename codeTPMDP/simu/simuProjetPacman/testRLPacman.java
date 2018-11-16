@@ -28,7 +28,7 @@ import agent.strategy.StrategyExplorationTest1;
 
 public class testRLPacman extends Application{
 	/** type de labyrinthe pour le jeu de pacman*/
-	static String mazename = "pacmanlayouts/smallGrid2.lay";//smallGrid smallGrid2 mediumGrid
+	static String mazename = "pacmanlayouts/originalClassic.lay";//smallGrid smallGrid2 mediumGrid
 
 	// parametres RL*/
     //coef apprentissage
@@ -40,7 +40,7 @@ public class testRLPacman extends Application{
 	
 	// parametres experience a lancer, un episode = une partie */
 	/** nombre d'experiences a lancer (pour faire une moyenne), une experience est un apprentissage sur plusieurs parties */
-	static int nbmean =1;
+	static int nbmean =1 ;
 	/** nombre de parties ou l'agent apprend */
 	static int nbepisodelearn = 500;
 	/** nombre de partie ou l'agent exploite la politique apprise (epsilon=0) */
@@ -69,7 +69,7 @@ public class testRLPacman extends Application{
 	static Scene scene;
 	
 	private static void setRLAgent(){
-		int method = 2;
+		int method = 3;
 		switch (method){
 			case 1:
 				System.out.println("Method 1 :");
@@ -93,9 +93,7 @@ public class testRLPacman extends Application{
 				FeatureFunction featurefunction2 = new FeatureFunctionPacman();
 				rlagent = new QLApproxAgent(alpha,gamma,pacmanmdp,featurefunction2);
 				break;
-
 		}
-
 	}
 	
 	/**

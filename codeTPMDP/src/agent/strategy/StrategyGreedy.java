@@ -26,6 +26,7 @@ public class StrategyGreedy extends StrategyExploration{
 
 	@Override
 	public Action getAction(Etat _e) {//renvoi null si _e absorbant
+		//VOTRE CODE ICI
 		double d =rand.nextDouble();
 		double sum = 0;
 		int block = 0;
@@ -36,9 +37,7 @@ public class StrategyGreedy extends StrategyExploration{
 			return null;
 		}
 		for(int i = 0;i<this.agent.getActionsLegales(_e).size();++i)
-		{
 				ListMaxElem.add(this.agent.getQValeur(_e,this.agent.getActionsLegales(_e).get(i)));
-		}
 		double value = Collections.max(ListMaxElem);
 		int addval = 2;
 		for(int i =0; i< this.agent.getActionsLegales(_e).size();++i)
@@ -47,20 +46,16 @@ public class StrategyGreedy extends StrategyExploration{
 			{
 			    block = 1;
 				tmp.put(1,this.agent.getActionsLegales(_e).get(i));
-
 			}else
             {
                 tmp.put(addval,this.agent.getActionsLegales(_e).get(i));
                 addval = addval +1;
-
             }
-
 		}
 		sum = (1 -epsilon);
 		if(sum > d && tmp.containsKey(1))
-		{
 			return tmp.get(1) ;
-		}else
+		else
 		{
 			if (addval > 2){
 				int randInt = rand.nextInt(addval-2)+2;
@@ -68,11 +63,7 @@ public class StrategyGreedy extends StrategyExploration{
 			}else {
 				return tmp.get(1);
 			}
-
 		}
-
-		//VOTRE CODE ICI
-
 	}
 
 	public double getEpsilon() {
