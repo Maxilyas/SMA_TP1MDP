@@ -79,11 +79,6 @@ public class FeatureFunctionPacman implements FeatureFunction{
 		double dist = BFS(stategamepacman,pacmanstate_next);
 		vfeatures[3] = dist/sizemap;
 
-
-
-
-		
-		
 		return vfeatures;
 	}
 
