@@ -16,9 +16,9 @@ public class StrategyGreedy extends StrategyExploration{
 	 */
 	protected double epsilon;
 	private Random rand=new Random();
-	
-	
-	
+
+
+
 	public StrategyGreedy(RLAgent agent,double epsilon) {
 		super(agent);
 		this.epsilon = epsilon;

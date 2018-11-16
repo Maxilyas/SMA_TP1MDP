@@ -112,7 +112,7 @@ public class FeatureFunctionPacman implements FeatureFunction{
 		{
 			int r = rq.poll();
 			int c = cq.poll();
-			if (state.getMaze().isFood(r,c))
+			if (state.getMaze().isFood(r,c) ||state.getMaze().isCapsule(r,c))
 			{
 				reached_end = true;
 				break;
